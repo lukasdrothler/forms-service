@@ -30,7 +30,7 @@ class AuthManager:
         if "AUTH_SVC_TOKEN_ENDPOINT" in os.environ:
             self.auth_token_endpoint = os.getenv("AUTH_SVC_TOKEN_ENDPOINT")
         else:
-            self.auth_token_endpoint = "/token"
+            self.auth_token_endpoint = "/token" # nosec
         logger.info(f"Auth service token endpoint set to {self.auth_token_endpoint}")
         
         # Ensure the host includes a protocol scheme
