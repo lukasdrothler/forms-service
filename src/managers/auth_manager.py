@@ -58,6 +58,7 @@ class AuthManager:
             },
             params={"stay_logged_in": str(stay_logged_in).lower()},
             headers={"Content-Type": "application/x-www-form-urlencoded"},
+            timeout=10
         )
         
         if response.status_code >= 300:
