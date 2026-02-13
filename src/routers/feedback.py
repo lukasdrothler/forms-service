@@ -30,7 +30,7 @@ def insert_feedback(
     """Insert a new feedback"""
     return forms.create_feedback(feedback_data, pg_manager)
 
-@router.patch("/forms/feedback/{feedback_id}/archive", tags=["forms"], status_code=201)
+@router.put("/forms/feedback/{feedback_id}/archive", tags=["forms"], status_code=201)
 def archive_feedback(
     request: Request,
     current_admin: CurrentAdminUser,

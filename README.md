@@ -13,12 +13,12 @@ The Forms Service is a microservice built with FastAPI for managing customer con
 ### Cancellation
 - `GET /forms/cancellation`: Retrieve all cancellation forms (Admin only).
 - `POST /forms/cancellation`: Submit a new cancellation form.
-- `PATCH /forms/cancellation/{cancellation_id}/archive`: Archive a cancellation form (Admin only).
+- `PUT /forms/cancellation/{cancellation_id}/archive`: Archive a cancellation form (Admin only).
 
 ### Feedback
 - `GET /forms/feedback`: Retrieve all feedback forms (Admin only).
 - `POST /forms/feedback`: Submit a new feedback form.
-- `PATCH /forms/feedback/{feedback_id}/archive`: Archive a feedback form (Admin only).
+- `PUT /forms/feedback/{feedback_id}/archive`: Archive a feedback form (Admin only).
 
 ### Token
 - `POST /token`: Obtain an access token using credentials.

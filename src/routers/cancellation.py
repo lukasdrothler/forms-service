@@ -30,7 +30,7 @@ def insert_cancellation(
     return forms.create_cancellation(cancellation_data, pg_manager)
 
 
-@router.patch("/forms/cancellation/{cancellation_id}/archive", tags=["forms"], status_code=201)
+@router.put("/forms/cancellation/{cancellation_id}/archive", tags=["forms"], status_code=201)
 def archive_cancellation(
     request: Request,
     current_admin: CurrentAdminUser,
