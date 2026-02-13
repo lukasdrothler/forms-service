@@ -7,7 +7,6 @@ from contextlib import asynccontextmanager
 from src.dependencies import setup_dependencies
 import src.routers.cancellation as cancellation
 import src.routers.feedback as feedback
-import src.routers.token as token
 
 import os
 import logging
@@ -63,7 +62,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(token.router)
 app.include_router(cancellation.router)
 app.include_router(feedback.router)
 

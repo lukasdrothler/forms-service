@@ -20,9 +20,6 @@ The Forms Service is a microservice built with FastAPI for managing customer con
 - `POST /forms/feedback`: Submit a new feedback form.
 - `PUT /forms/feedback/{feedback_id}/archive`: Archive a feedback form (Admin only).
 
-### Token
-- `POST /token`: Obtain an access token using credentials.
-
 ## Configuration
 
 The service is configured using environment variables. You can set these in a `.env` file or in your shell environment.

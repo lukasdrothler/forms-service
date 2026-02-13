@@ -1,14 +1,9 @@
 """
 Dependency injection container for FastAPI Utils
 """
-from typing import Annotated, Any, Dict, Callable
+from typing import Any, Dict, Callable
 
-from fastapi import Depends
-from fastapi.security import OAuth2PasswordBearer
-
-from src.models import User
 from src.managers.postgres_manager import PostgresManager
-from src.managers.auth_manager import AuthManager
 
 
 class DependencyContainer:
@@ -56,56 +51,14 @@ def create_postgres_manager() -> PostgresManager:
     return PostgresManager()
 
 
-def create_auth_manager() -> AuthManager:
-    """Factory function to create AuthManager instance"""
-    return AuthManager()
-
-
 def setup_dependencies() -> None:
     """Setup all dependencies in the container"""
     container.clear()
     
     # Register singleton instances
     container.register_singleton("postgres_manager", create_postgres_manager())
-    container.register_singleton("auth_manager", create_auth_manager())
 
 
 def get_postgres_manager() -> PostgresManager:
     """FastAPI dependency function to get PostgresManager instance"""
     return container.get("postgres_manager")
-
-
-def get_auth_manager() -> AuthManager:
-    """FastAPI dependency function to get AuthManager instance"""
-    return container.get("auth_manager")
-
-
-# OAuth2 scheme for extracting bearer tokens from Authorization header
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-def get_bearer_token(token: Annotated[str, Depends(oauth2_scheme)]) -> str:
-    """FastAPI dependency function to extract bearer token from Authorization header"""
-    return token
-
-
-# Convenience type annotation for bearer token - use this in route handlers
-BearerToken = Annotated[str, Depends(get_bearer_token)]
-
-def get_current_user(
-    token: BearerToken,
-    auth_manager: AuthManager = Depends(get_auth_manager)
-) -> User:
-    """FastAPI dependency to validate token and get current user"""
-    return auth_manager.get_user_by_token(token)
-
-
-def get_current_admin_user(
-    current_user: Annotated[User, Depends(get_current_user)],
-    auth_manager: AuthManager = Depends(get_auth_manager)
-) -> User:
-    """Dependency to get current admin user"""
-    return auth_manager.get_current_admin_user(current_user)
-
-# Convenience type annotation
-CurrentAdminUser = Annotated[User, Depends(get_current_admin_user)]

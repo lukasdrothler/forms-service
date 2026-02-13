@@ -1,10 +1,20 @@
 from src.managers.postgres_manager import PostgresManager
 from src.models import CreateCancellation, CreateFeedback, Cancellation, Feedback
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Request
 import logging
 
 logger = logging.getLogger(__name__)
+
+def user_is_admin(request: Request) -> bool:
+    return request.headers.get("x-admin", "false").lower() == "true"
+
+def deny_for_non_admins(request: Request):
+    if not user_is_admin(request):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized"
+        )
 
 def create_cancellation(cancellation_data: CreateCancellation, pg_manager: PostgresManager):
     """Creates a new cancellation entry in the database."""
@@ -50,8 +60,9 @@ def create_feedback(feedback_data: CreateFeedback, pg_manager: PostgresManager):
     return {"detail": "Feedback created successfully"}
 
 
-def archive_cancellation(cancellation_id: int, pg_manager: PostgresManager):
+def archive_cancellation(cancellation_id: int, pg_manager: PostgresManager, request: Request):
     """Archive a cancellation entry in the database."""
+    deny_for_non_admins(request)
     sql = "UPDATE cancellation SET is_archived = true WHERE id = %s"
     params = (cancellation_id,)
     try:
@@ -65,8 +76,9 @@ def archive_cancellation(cancellation_id: int, pg_manager: PostgresManager):
     return {"detail": "Cancellation archived successfully"}
 
 
-def archive_feedback(feedback_id: int, pg_manager: PostgresManager):
+def archive_feedback(feedback_id: int, pg_manager: PostgresManager, request: Request):
     """Archive a feedback entry in the database."""
+    deny_for_non_admins(request)
     sql = "UPDATE feedback SET is_archived = true WHERE id = %s"
     params = (feedback_id,)
     try:
@@ -80,8 +92,9 @@ def archive_feedback(feedback_id: int, pg_manager: PostgresManager):
     return {"detail": "Feedback archived successfully"}
 
 
-def get_all_cancellations(pg_manager: PostgresManager) -> list[Feedback]:
+def get_all_cancellations(pg_manager: PostgresManager, request: Request) -> list[Cancellation]:
     """Retrieve all cancellations from the database."""
+    deny_for_non_admins(request)
     sql = "SELECT * FROM cancellation"
     try:
         cancellations = pg_manager.execute_query(sql)
@@ -94,8 +107,9 @@ def get_all_cancellations(pg_manager: PostgresManager) -> list[Feedback]:
     return [Cancellation(**cancellation) for cancellation in cancellations]
 
 
-def get_all_feedbacks(pg_manager: PostgresManager) -> list[Feedback]:
+def get_all_feedbacks(pg_manager: PostgresManager, request: Request) -> list[Feedback]:
     """Retrieve all feedbacks from the database."""
+    deny_for_non_admins(request)
     sql = "SELECT * FROM feedback"
     try:
         feedbacks = pg_manager.execute_query(sql)
