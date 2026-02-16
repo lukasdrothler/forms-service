@@ -31,7 +31,7 @@ def insert_cancellation(
 def archive_cancellation(
     request: Request,
     pg_manager: PostgresManager = Depends(get_postgres_manager),
-    cancellation_id: int = Path(description="The ID of the cancellation to archive")
+    cancellation_id: str = Path(description="The ID of the cancellation to archive")
     ):
     """Archive a cancellation by its ID"""
     return forms.archive_cancellation(cancellation_id, pg_manager, request)

@@ -60,7 +60,7 @@ def create_feedback(feedback_data: CreateFeedback, pg_manager: PostgresManager):
     return {"detail": "Feedback created successfully"}
 
 
-def archive_cancellation(cancellation_id: int, pg_manager: PostgresManager, request: Request):
+def archive_cancellation(cancellation_id: str, pg_manager: PostgresManager, request: Request):
     """Archive a cancellation entry in the database."""
     deny_for_non_admins(request)
     sql = "UPDATE cancellation SET is_archived = true WHERE id = %s"
@@ -76,7 +76,7 @@ def archive_cancellation(cancellation_id: int, pg_manager: PostgresManager, requ
     return {"detail": "Cancellation archived successfully"}
 
 
-def archive_feedback(feedback_id: int, pg_manager: PostgresManager, request: Request):
+def archive_feedback(feedback_id: str, pg_manager: PostgresManager, request: Request):
     """Archive a feedback entry in the database."""
     deny_for_non_admins(request)
     sql = "UPDATE feedback SET is_archived = true WHERE id = %s"

@@ -32,7 +32,7 @@ def insert_feedback(
 def archive_feedback(
     request: Request,
     pg_manager: PostgresManager = Depends(get_postgres_manager),
-    feedback_id: int = Path(description="The ID of the feedback to archive")
+    feedback_id: str = Path(description="The ID of the feedback to archive")
     ):
     """Archive a feedback by its ID"""
     return forms.archive_feedback(feedback_id, pg_manager, request)
