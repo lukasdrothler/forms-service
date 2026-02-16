@@ -252,7 +252,7 @@ DROP TABLE IF EXISTS cancellation;
 DROP TABLE IF EXISTS feedback;
 
 CREATE TABLE IF NOT EXISTS cancellation (
-    id SERIAL PRIMARY KEY,
+    id varchar(36) NOT NULL DEFAULT gen_random_uuid()::text,
     email varchar(255) NOT NULL,
     name varchar(100) NOT NULL,
     last_name varchar(100) NOT NULL,
@@ -268,7 +268,7 @@ CREATE TABLE IF NOT EXISTS cancellation (
 );
 
 CREATE TABLE IF NOT EXISTS feedback (
-    id SERIAL PRIMARY KEY,
+    id varchar(36) NOT NULL DEFAULT gen_random_uuid()::text,
     email varchar(255) DEFAULT NULL,
     text varchar(500) DEFAULT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
