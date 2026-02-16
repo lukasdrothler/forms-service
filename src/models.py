@@ -15,7 +15,7 @@ class CreateCancellation(BaseModel):
     termination_date: datetime
 
 class Cancellation(CreateCancellation):
-    id: int
+    id: str
     is_archived: bool = False
     created_at: datetime
 
@@ -25,6 +25,6 @@ class CreateFeedback(BaseModel):
     text: str
 
 class Feedback(CreateFeedback):
-    id: int
+    id: str
     is_archived: bool=False
     created_at: datetime
