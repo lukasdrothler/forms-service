@@ -2,6 +2,15 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
+
+class ErrorDetail(BaseModel):
+    detail: str
+
+
+class DetailResponse(BaseModel):
+    detail: str
+
+
 class CreateCancellation(BaseModel):
     email: str
     name: str
